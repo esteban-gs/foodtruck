@@ -44,8 +44,9 @@ function showForm()
 {# shows form so user can enter their name.  Initial scenario
 	global $config;
 
-	echo 
-	'<script type="text/javascript" src="include/util.js"></script>
+	echo '
+	<script src="indexselector.js"></script>
+	<script type="text/javascript" src="include/util.js"></script>
 	<script type="text/javascript">
 		function checkForm(thisForm)
 		{//check form data for valid info
@@ -53,7 +54,7 @@ function showForm()
 			return true;//if all is passed, submit!
 		}
 	</script>
-	<div = "container">
+	<div class="container">
 	<h3 align="center">Order great food here!</h3>
 	<p align="center">Please select your items and submit your order</p>
     <BR />
@@ -62,28 +63,36 @@ function showForm()
 	<form action="' . THIS_PAGE . '" method="post" onsubmit="return checkForm(this);">
              ';
       echo '
-      <div class = "table-responsive">
-        <table class = "table">
-            <tr>
-                <th>Quantity</th>
-                <th>Item</th>
-                <th>Description</th>
-                <th>Price</th>
-            </tr>';
+    <div class = "table-responsive">
+         <table class = "table">
+            <thead>
+                <tr>
+                    <th>Quantity</th>
+                    <th>Item</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>      
+             ';
     
 		foreach($config->items as $item)
           {
             //echo "<p>ID:$item->ID  Name:$item->Name</p>"; 
             //echo '<p>Taco <input type="text" name="item_1" /></p>';
-            echo '
+	
+            echo '         
             <tr>
-              <td>  
-                <input type="number"  name="item_' .$item->ID . '" min="0" max="50">
-              </td>
-              <td>' . $item->Name . '</td>
-              <td>' .$item->Description . '</td>
-              <td>' . money_format('%n', $item->Price) . '</td>
-            </tr>';
+                <td>  
+                    <div class="quantity">
+                        <input type="number"  name="item_' .$item->ID . '" min="0" max="50" step="1" value="0">
+                    </div>
+                </td>
+                <td>' . $item->SingularName . '</td>
+                <td>' .$item->Description . '</td>
+                <td>' . money_format('%n', $item->Price) . '</td>
+            </tr>       
+            ';
             
             
             
@@ -112,7 +121,11 @@ function showForm()
               //echo '<p>' . $item->Name . ' <input type="text" name="item_' . $item->ID . '" /></p>';
               
           }  
-          echo '</table></div>';
+          echo ' 
+        </tbody>
+     </table>
+</div>     
+          ';
  
           echo '
 				<p>
@@ -231,7 +244,8 @@ function showData()
             </div>';
 	
 	if ($myOrderSubtotal > 0) //show totals
-	{
+	{  
+        $myRedirect = '';
 		//block below is the totals section
 		//@todo: might want to add some styling to the totals. 
 
@@ -245,18 +259,20 @@ function showData()
 		echo "<b><p style=\"color:blue;\">Tax amount: " . money_format('%n', $myTaxAmount) ."</p></b>";
         
         //$percentTaxRate is defined in 'includes/config.php' 
-		echo "<b><p style=\"color:blue;\">Tax Rate: " . money_format('%n', $percentTaxRate) ."</p></b>";      
+        $myTaxPercent = getPercentRate();
+		echo "<b><p style=\"color:blue;\">Tax Rate: " . $myTaxPercent . "%</p></b>";      
 
 		//creates total with percentage added
 		$myTotal = getOrderTotal($myOrderSubtotal);
 		echo "<b><p style=\"color:blue;\">Order Total: " . money_format('%n', $myTotal) ."</p></b>";
         
         echo '</div>';
-	}else{// redirect		       
-
+	}else{// redirect	
+        
 		echo '<script type="text/javascript">
            window.location = "' . THIS_PAGE . '"
       </script>';
+        
 	}//end else
 
 

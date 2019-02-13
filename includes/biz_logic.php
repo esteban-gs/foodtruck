@@ -36,7 +36,7 @@ $orderSubtotal = 0;
 function getOrderSubtotal($lineSubtotal)
 {
 	global $orderSubtotal;
-	$orderSubtotal =  $orderSubtotal + $lineSubtotal;
+	$orderSubtotal += $lineSubtotal;
 	return $orderSubtotal;	// cast as currency
 }
 
@@ -46,6 +46,13 @@ function getOrderSubtotal($lineSubtotal)
 //ENTER tax rate as the percentage number. Example: if the taxrate is 10%, enter 10.
 $percentTaxRate = 9.3; //Seattle restaurant tax is 9.3%	
 $decimalTaxRate = $percentTaxRate / 100;
+
+function getPercentRate()
+{
+    global $percentTaxRate;
+    $taxPercent = round((float)$percentTaxRate, 2);
+    return $taxPercent;
+}
 
 function getTaxAmount($preTaxAmount)
 {

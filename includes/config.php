@@ -20,6 +20,14 @@
  * @todo none
  */
 # START SETTINGS (show or hide page errors, turn on/off error logging)---------------------------------------------
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
+
+
 $sub_folder = 'food';//If app installed in subfolder, place here.  name of folder, no leading or trailing forward or backslash
 define('SECURE',true); # true forces secure connection, https, for all site pages
 date_default_timezone_set('America/Los_Angeles'); #sets default date/timezone for this website
@@ -41,5 +49,6 @@ if (SECURE && $_SERVER['SERVER_PORT'] != 443) {#redirect to force HTTPS
 # START CONSTANTS & PATHS (universal file paths & values)-----------------------------------------------------------------
 /* automatic path settings - use the following 4 path settings for placing all code in one application folder */ 
 define('THIS_PAGE', basename($_SERVER['PHP_SELF'])); # Current page name, stripped of folder info - (saves resources)
+
 # END CONSTANTS & PATHS (universal file paths & values)--------------------------------------------------------------------
 ?>
